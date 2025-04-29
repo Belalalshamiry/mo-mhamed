@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مؤقت تنازلي</title>
+</head>
+<body>
+    <h1>مؤقت تنازلي</h1>
+    <input type="number" id="minutes" placeholder="الدقائق">
+    <button id="start">بدء</button>
+    <p id="timer"></p>
+    <style>
+        body{
+            background-color: bisque;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+  
+
+        
+
+        }
+        h1{
+            text-align: center;
+        }
+  
+    </style>
+
+    <script>
+        let countdown;
+
+        document.getElementById('start').addEventListener('click', function () {
+            const minutes = parseInt(document.getElementById('minutes').value);
+            let time = minutes * 60;
+
+            clearInterval(countdown);
+
+            countdown = setInterval(function () {
+                const minutesLeft = Math.floor(time / 60);
+                let secondsLeft = time % 60;
+
+                secondsLeft = secondsLeft < 10 ? '0' + secondsLeft : secondsLeft;
+
+                document.getElementById('timer').textContent = `${minutesLeft}:${secondsLeft}`;
+
+                if (time <= 0) {
+                    clearInterval(countdown);
+                    document.getElementById('timer').textContent = "انتهى الوقت!";
+                } else {
+                    time--;
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

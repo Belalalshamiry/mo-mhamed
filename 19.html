@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رمي النرد</title>
+</head>
+<body>
+    <h1>رمي النرد</h1>
+    <p id="result">انقر على الزر لرمي النرد.</p>
+    <button id="roll">رمي</button>
+    <style>
+        body{
+            background-color: aquamarine;
+            font-size: larger;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            text-align: center;
+        }
+        h1{
+            text-align: center;
+        }
+    </style>
+
+    <script>
+        document.getElementById('roll').addEventListener('click', function () {
+            const result = Math.floor(Math.random() * 6) + 1;
+            document.getElementById('result').textContent = "النتيجة: " + result;
+        });
+    </script>
+</body>
+</html>
+

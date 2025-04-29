@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محول العملات</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+
+    <div class="converter">
+        <h2>محول العملات</h2>
+       
+        <div class="input-group">
+            <input type="number" id="amount" placeholder="أدخل المبلغ">
+            <select id="fromCurrency"></select>
+            <select id="toCurrency"></select>
+        </div>
+
+        <button onclick="convertCurrency()">تحويل</button>
+
+        <h3 id="result">النتيجة: 0</h3>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<style>
+
+ 
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #222;
+    color: white;
+}
+
+.converter {
+    text-align: center;
+    background: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    width: 300px;
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+.input-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+input, select, button {
+    padding: 10px;
+    margin: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+}
+
+input {
+    width: 100px;
+}
+
+select {
+    width: 80px;
+}
+
+button {
+    background: green;
+    color: white;
+    cursor: pointer;
+}
+</style>
+<script>
+
+const apiKey = "YOUR_API_KEY"; // ضع مفتاح API الخاص بك هنا
+const apiUrl = "https://api.exchangerate-api.com/v4/latest/";
+
+const fromCurrency = document.getElementById("fromCurrency");
+const toCurrency = document.getElementById("toCurrency");
+const amount = document.getElementById("amount");
+const result = document.getElementById("result");
+
+// تحميل قائمة العملات عند فتح الصفحة
+fetch(apiUrl + "USD")
+    .then(response => response.json())
+    .then(data => {
+        const currencies = Object.keys(data.rates);
+        currencies.forEach(currency => {
+            fromCurrency.innerHTML += `<option value="${currency}">${currency}</option>`;
+            toCurrency.innerHTML += `<option value="${currency}">${currency}</option>`;
+        });
+        fromCurrency.value = "USD";
+        toCurrency.value = "EUR";
+    });
+
+// دالة تحويل العملات
+function convertCurrency() {
+    const from = fromCurrency.value;
+    const to = toCurrency.value;
+    const amountValue = amount.value;
+
+    if (amountValue === "" || amountValue <= 0) {
+        alert("يرجى إدخال مبلغ صحيح!");
+        return;
+    }
+
+    fetch(apiUrl + from)
+        .then(response => response.json())
+        .then(data => {
+            const rate = data.rates[to];
+            const convertedAmount = (amountValue * rate).toFixed(2);
+            result.innerText = `النتيجة: ${convertedAmount} ${to}`;
+        })
+        .catch(error => {
+            alert("حدث خطأ! تأكد من الاتصال بالإنترنت.");
+            console.error(error);
+        });
+}</script>

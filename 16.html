@@ -1,0 +1,162 @@
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>مؤقت بومودورو</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>مؤقت بومودورو</h1>
+    <div class="timer">
+      <span id="minutes">25</span>:<span id="seconds">00</span>
+    </div>
+    <div class="buttons">
+      <button id="start">ابدأ</button>
+      <button id="pause">إيقاف مؤقت</button>
+      <button id="reset">إعادة</button>
+    </div>
+    <div class="mode">
+      <span id="mode-text">وضع العمل</span>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+<style>
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  direction: rtl;
+  margin: 0;
+}
+
+.container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 300px;
+}
+
+h1 {
+  color: #e74c3c;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.timer {
+  font-size: 48px;
+  margin: 20px 0;
+  color: #2c3e50;
+}
+
+.buttons button {
+  margin: 10px 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#start {
+  background-color: #27ae60;
+  color: #fff;
+}
+
+#pause {
+  background-color: #f39c12;
+  color: #fff;
+}
+
+#reset {
+  background-color: #c0392b;
+  color: #fff;
+}
+
+.mode {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #2980b9;
+}
+</style>
+
+
+
+
+<script>
+let workTime = 25 * 60;  // 25 دقيقة
+let breakTime = 5 * 60;  // 5 دقائق
+let isWork = true;
+let time = workTime;
+let timer;
+let running = false;
+
+const minutesEl = document.getElementById("minutes");
+const secondsEl = document.getElementById("seconds");
+const startBtn = document.getElementById("start");
+const pauseBtn = document.getElementById("pause");
+const resetBtn = document.getElementById("reset");
+const modeText = document.getElementById("mode-text");
+
+function updateDisplay() {
+  let mins = Math.floor(time / 60);
+  let secs = time % 60;
+  minutesEl.textContent = String(mins).padStart(2, "0");
+  secondsEl.textContent = String(secs).padStart(2, "0");
+}
+
+function toggleMode() {
+  isWork = !isWork;
+  time = isWork ? workTime : breakTime;
+  modeText.textContent = isWork ? "وضع العمل" : "استراحة";
+  updateDisplay();
+}
+
+function startTimer() {
+  if (!running) {
+    running = true;
+    timer = setInterval(() => {
+      time--;
+      updateDisplay();
+      if (time <= 0) {
+        clearInterval(timer);
+        running = false;
+        toggleMode();
+        startTimer();
+      }
+    }, 1000);
+  }
+}
+
+function pauseTimer() {
+  clearInterval(timer);
+  running = false;
+}
+
+function resetTimer() {
+  clearInterval(timer);
+  running = false;
+  time = isWork ? workTime : breakTime;
+  updateDisplay();
+}
+
+startBtn.addEventListener("click", startTimer);
+pauseBtn.addEventListener("click", pauseTimer);
+resetBtn.addEventListener("click", resetTimer);
+
+updateDisplay()
+</script>

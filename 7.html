@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق الطقس</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="weather-container">
+        <h2>تطبيق الطقس</h2>
+        <input type="text" id="cityInput" placeholder="أدخل اسم المدينة">
+        <button id="getWeather">عرض الطقس</button>
+        <div id="weatherResult" class="hidden">
+            <h3 id="cityName"></h3>
+            <p id="temperature"></p>
+            <p id="description"></p>
+            <img id="weatherIcon" src="" alt="Icon">
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<style>
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+}
+
+.weather-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+}
+
+input {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+button {
+    padding: 10px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.hidden {
+    display: none;
+}
+
+#weatherResult {
+    margin-top: 15px;
+}
+
+#weatherIcon {
+    width: 50px;
+    height: 50px;
+}</style>
+<script>
+
+const apiKey = "YOUR_API_KEY"; // استبدل YOUR_API_KEY بمفتاح API الخاص بك
+
+document.getElementById("getWeather").addEventListener("click", function () {
+    const city = document.getElementById("cityInput").value.trim();
+   
+    if (city === "") {
+        alert("يرجى إدخال اسم المدينة!");
+        return;
+    }
+
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=ar`;
+
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.cod === "404") {
+                alert("المدينة غير موجودة، حاول مرة أخرى!");
+                return;
+            }
+
+            document.getElementById("cityName").textContent = `الطقس في ${data.name}`;
+            document.getElementById("temperature").textContent = `درجة الحرارة: ${data.main.temp}°C`;
+            document.getElementById("description").textContent = data.weather[0].description;
+            document.getElementById("weatherIcon").src = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+
+            document.getElementById("weatherResult").classList.remove("hidden");
+        })
+        .catch(() => {
+            alert("حدث خطأ أثناء جلب البيانات. حاول مرة أخرى!");
+        });
+});</script>

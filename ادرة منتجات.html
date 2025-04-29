@@ -1,0 +1,168 @@
+
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>إدارة المنتجات</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>نظام إدارة المنتجات</h1>
+
+    <div class="form">
+      <input type="text" id="productName" placeholder="اسم المنتج" />
+      <input type="number" id="productPrice" placeholder="السعر" />
+      <button onclick="addProduct()">إضافة منتج</button>
+      <li><a href="جميع المشاريع.html">جميع المشاريع</a></li>
+    </div>
+
+    <div class="product-list" id="productList">
+      <!-- المنتجات هتظهر هنا -->
+    </div>
+  </div>
+  
+
+   
+  </div>
+
+  <script src="script.js"></script>
+ 
+</body>
+</html>
+
+
+
+
+ <style>
+body {
+  font-family: 'Cairo', sans-serif;
+  background: #f5f5f5;
+  margin: 0;
+  padding: 0;
+  direction: rtl;
+}
+
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  background: #fff;
+  padding: 30px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+.product-item {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-item span {
+  font-weight: bold;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+
+
+
+</style>
+<script>
+let products = [];
+
+function addProduct() {
+  const name = document.getElementById('productName').value.trim();
+  const price = document.getElementById('productPrice').value.trim();
+
+  if (name === '' || price === '') {
+    alert('الرجاء إدخال اسم المنتج والسعر');
+    return;
+  }
+
+  const product = { name, price };
+  products.push(product);
+  renderProducts();
+
+  // تصفير الحقول
+  document.getElementById('productName').value = '';
+  document.getElementById('productPrice').value = '';
+}
+
+function renderProducts() {
+  const list = document.getElementById('productList');
+  list.innerHTML = '';
+
+  products.forEach((product, index) => {
+    const div = document.createElement('div');
+    div.className = 'product-item';
+    div.innerHTML = `
+      <span>${product.name} - ${product.price} ج.م</span>
+      <button class="delete-btn" onclick="deleteProduct(${index})">حذف</button>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function deleteProduct(index) {
+  products.splice(index, 1);
+  renderProducts();
+}
+
+
+
+
+</script>

@@ -1,0 +1,103 @@
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>مولد كلمات مرور</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      width: 350px;
+      text-align: center;
+      direction: rtl;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    #password {
+      font-size: 20px;
+      padding: 10px;
+      width: 100%;
+      margin-bottom: 20px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      text-align: center;
+      direction: ltr;
+    }
+
+    button {
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+
+    .copy-btn {
+      margin-top: 10px;
+      background-color: #28a745;
+    }
+
+    .copy-btn:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>مولّد كلمة مرور عشوائية</h2>
+    <input type="text" id="password" readonly>
+    <br>
+    <button onclick="generatePassword()">إنشاء كلمة مرور</button>
+    <button class="copy-btn" onclick="copyPassword()">نسخ</button>
+  </div>
+
+  <script>
+    function generatePassword() {
+      const length = 16;
+      const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{};:,.<>?";
+      let password = "";
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+      }
+      document.getElementById("password").value = password;
+    }
+
+    function copyPassword() {
+      const passwordInput = document.getElementById("password");
+      passwordInput.select();
+      passwordInput.setSelectionRange(0, 99999); // For mobile devices
+      document.execCommand("copy");
+      alert("تم نسخ كلمة المرور!");
+    }
+  </script>
+
+</body>
+</html>

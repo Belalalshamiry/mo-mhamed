@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تغيير لون الخلفية</title>
+    <link rel="stylesheet" href="as.css">
+</head>
+<body>
+    <button id="colorButton">تغيير اللون</button>
+
+    <script src="df.js"></script>
+</body>
+</html>
+<style>
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    transition: background-color 0.5s ease;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 1.5rem;
+    border: none;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+</style>
+<script>
+// دالة توليد لون عشوائي
+function getRandomColor() {
+    let letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+// تغيير لون الخلفية عند النقر على الزر
+document.getElementById("colorButton").addEventListener("click", function () {
+    document.body.style.backgroundColor = getRandomColor();
+});
+</script>

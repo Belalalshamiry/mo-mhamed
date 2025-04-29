@@ -1,0 +1,161 @@
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>قائمة المهام</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>قائمة المهام</h1>
+    <div class="input-group">
+      <input type="text" id="taskInput" placeholder="أضف مهمة جديدة..." />
+      <button onclick="addTask()">إضافة</button>
+    </div>
+    <ul id="taskList"></ul>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+<style>
+
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(to right, #74ebd5, #acb6e5);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.container {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  margin-top: 50px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  width: 90%;
+  max-width: 500px;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #009688;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #00796b;
+}
+
+ul#taskList {
+  list-style: none;
+  padding: 0;
+}
+
+ul#taskList li {
+  background: #f9f9f9;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  cursor: grab;
+  font-size: 18px;
+  border: 1px solid #ccc;
+}
+
+ul#taskList li.dragging {
+  opacity: 0.5;
+}
+</style>
+
+
+<script>
+
+const taskInput = document.getElementById("taskInput");
+const taskList = document.getElementById("taskList");
+
+function addTask() {
+  const taskText = taskInput.value.trim();
+  if (taskText === "") return;
+
+  const li = document.createElement("li");
+  li.textContent = taskText;
+  li.setAttribute("draggable", "true");
+
+  addDragEvents(li);
+
+  taskList.appendChild(li);
+  taskInput.value = "";
+}
+
+function addDragEvents(item) {
+  item.addEventListener("dragstart", () => {
+    item.classList.add("dragging");
+  });
+
+  item.addEventListener("dragend", () => {
+    item.classList.remove("dragging");
+  });
+}
+
+taskList.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  const afterElement = getDragAfterElement(taskList, e.clientY);
+  const dragging = document.querySelector(".dragging");
+  if (afterElement == null) {
+    taskList.appendChild(dragging);
+  } else {
+    taskList.insertBefore(dragging, afterElement);
+  }
+});
+
+function getDragAfterElement(container, y) {
+  const draggableElements = [
+    ...container.querySelectorAll("li:not(.dragging)")
+  ];
+
+  return draggableElements.reduce((closest, child) => {
+    const box = child.getBoundingClientRect();
+    const offset = y - box.top - box.height / 2;
+
+    if (offset < 0 && offset > closest.offset) {
+      return { offset: offset, element: child };
+    } else {
+      return closest;
+    }
+  }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
+</script>

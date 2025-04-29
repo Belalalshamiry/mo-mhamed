@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ساعة توقيت مع لفات</title>
+</head>
+<body>
+    <h1>ساعة توقيت مع لفات</h1>
+    <p id="display">00:00:00</p>
+    <button id="startStop">بدء/إيقاف</button>
+    <button id="lap">لفة</button>
+    <ul id="laps"></ul>
+<style>
+    body{
+        background-color: blueviolet;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        display: grid;
+        justify-content: center;
+        align-items: center;
+    }
+    h1{
+        text-align: center;
+    }
+</style>
+
+    <script>
+        let startTime;
+        let elapsedTime = 0;
+        let timerInterval;
+        let isRunning = false;
+
+        function formatTime(time) {
+            const hours = Math.floor(time / 3600000);
+            const minutes = Math.floor((time % 3600000) / 60000);
+            const seconds = Math.floor((time % 60000) / 1000);
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function updateDisplay() {
+            document.getElementById('display').textContent = formatTime(elapsedTime);
+        }
+
+        document.getElementById('startStop').addEventListener('click', function () {
+            if (isRunning) {
+                clearInterval(timerInterval);
+                isRunning = false;
+                this.textContent = "بدء";
+            } else {
+                startTime = Date.now() - elapsedTime;
+                timerInterval = setInterval(function () {
+                    elapsedTime = Date.now() - startTime;
+                    updateDisplay();
+                }, 10);
+                isRunning = true;
+                this.textContent = "إيقاف";
+            }
+        });
+
+        document.getElementById('lap').addEventListener('click', function () {
+            if (isRunning) {
+                const lapTime = document.createElement('li');
+                lapTime.textContent = formatTime(elapsedTime);
+                document.getElementById('laps').appendChild(lapTime);
+            }
+        });
+    </script>
+</body>
+</html>

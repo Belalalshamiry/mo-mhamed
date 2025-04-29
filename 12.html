@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تتبع المصاريف</title>
+    <link rel="stylesheet" href="e.css">
+</head>
+<body>
+
+    <div class="tracker">
+        <h2>تتبع المصاريف</h2>
+
+        <div class="input-group">
+            <input type="text" id="expenseName" placeholder="اسم المصروف">
+            <input type="number" id="expenseAmount" placeholder="المبلغ">
+            <button onclick="addExpense()">إضافة</button>
+        </div>
+
+        <ul id="expenseList"></ul>
+
+        <h3>إجمالي المصاريف: <span id="total">0</span> $</h3>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<style>
+    
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #222;
+    color: white;
+}
+
+.tracker {
+    text-align: center;
+    background: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    width: 350px;
+}
+
+.input-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+input, button {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+}
+
+input {
+    width: 120px;
+}
+
+button {
+    background: green;
+    color: white;
+    cursor: pointer;
+}
+
+ul {
+    list-style: none;
+    margin-top: 10px;
+}
+
+ul li {
+    background: #444;
+    padding: 10px;
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5px;
+}
+
+ul li button {
+    background: red;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+</style>
+<script>    
+let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+updateUI();
+
+function addExpense() {
+    const name = document.getElementById("expenseName").value;
+    const amount = document.getElementById("expenseAmount").value;
+
+    if (name === "" || amount === "" || amount <= 0) {
+        alert("يرجى إدخال بيانات صحيحة!");
+        return;
+    }
+
+    const expense = { id: Date.now(), name, amount: parseFloat(amount) };
+    expenses.push(expense);
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+
+    updateUI();
+}
+
+function deleteExpense(id) {
+    expenses = expenses.filter(expense => expense.id !== id);
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+    updateUI();
+}
+
+function updateUI() {
+    const expenseList = document.getElementById("expenseList");
+    const total = document.getElementById("total");
+
+    expenseList.innerHTML = "";
+    let totalAmount = 0;
+
+    expenses.forEach(expense => {
+        totalAmount += expense.amount;
+        const li = document.createElement("li");
+        li.innerHTML = `${expense.name} - ${expense.amount} $
+                        <button onclick="deleteExpense(${expense.id})">حذف</button>`;
+        expenseList.appendChild(li);
+    });
+
+    total.innerText = totalAmount.toFixed(2);
+}
+</script>

@@ -1,0 +1,133 @@
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>نموذج التخزين المحلي</title>
+  
+</head>
+<body>
+  <div class="container">
+    <h2>نموذج التخزين المحلي</h2>
+    <form id="userForm">
+      <label for="name">الاسم:</label>
+      <input type="text" id="name" placeholder="اكتب اسمك" required>
+
+      <label for="message">الرسالة:</label>
+      <textarea id="message" placeholder="اكتب رسالتك" required></textarea>
+
+      <button type="submit">حفظ</button>
+    </form>
+    <div id="output"></div>
+  </div>
+
+  
+</body>
+</html>
+
+<style>
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f0f4f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  direction: rtl;
+}
+
+.container {
+  background-color: #fff;
+  padding: 20px 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 320px;
+}
+
+h2 {
+  text-align: center;
+  color: #2c3e50;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #34495e;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #3498db;
+}
+
+#output {
+  margin-top: 15px;
+  background-color: #ecf0f1;
+  padding: 10px;
+  border-radius: 8px;
+}
+</style>
+
+<script>
+
+// تحميل البيانات عند بداية الصفحة
+window.onload = function () {
+  const savedName = localStorage.getItem("name");
+  const savedMessage = localStorage.getItem("message");
+
+  if (savedName && savedMessage) {
+    document.getElementById("output").innerHTML = `
+      <p><strong>الاسم:</strong> ${savedName}</p>
+      <p><strong>الرسالة:</strong> ${savedMessage}</p>
+    `;
+
+    document.getElementById("name").value = savedName;
+    document.getElementById("message").value = savedMessage;
+  }
+};
+
+// عند إرسال النموذج
+document.getElementById("userForm").addEventListener("submit", function (e) {
+  e.preventDefault(); // منع إعادة تحميل الصفحة
+
+  const name = document.getElementById("name").value;
+  const message = document.getElementById("message").value;
+
+  // تخزين البيانات في localStorage
+  localStorage.setItem("name", name);
+  localStorage.setItem("message", message);
+
+  // عرض البيانات
+  document.getElementById("output").innerHTML = `
+    <p><strong>الاسم:</strong> ${name}</p>
+    <p><strong>الرسالة:</strong> ${message}</p>
+  `;
+});
+
+
+</script>

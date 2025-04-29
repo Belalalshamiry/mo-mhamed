@@ -1,0 +1,144 @@
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تطبيق الملاحظات</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      width: 90%;
+      max-width: 500px;
+      margin-top: 50px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: none;
+      margin-bottom: 10px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .notes {
+      margin-top: 20px;
+    }
+
+    .note {
+      background-color: #f0f0f0;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 5px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      background-color: darkred;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>تطبيق الملاحظات</h1>
+    <textarea id="noteInput" placeholder="اكتب ملاحظتك هنا..."></textarea>
+    <button onclick="addNote()">إضافة الملاحظة</button>
+    <div class="notes" id="notesContainer"></div>
+  </div>
+
+  <script>
+    // تحميل الملاحظات عند فتح الصفحة
+    window.onload = function () {
+      loadNotes();
+    };
+
+    function addNote() {
+      const noteInput = document.getElementById("noteInput");
+      const noteText = noteInput.value.trim();
+      if (noteText !== "") {
+        const notes = JSON.parse(localStorage.getItem("notes")) || [];
+        notes.push(noteText);
+        localStorage.setItem("notes", JSON.stringify(notes));
+        noteInput.value = "";
+        loadNotes();
+      }
+    }
+
+    function deleteNote(index) {
+      const notes = JSON.parse(localStorage.getItem("notes")) || [];
+      notes.splice(index, 1);
+      localStorage.setItem("notes", JSON.stringify(notes));
+      loadNotes();
+    }
+
+    function loadNotes() {
+      const notesContainer = document.getElementById("notesContainer");
+      notesContainer.innerHTML = "";
+      const notes = JSON.parse(localStorage.getItem("notes")) || [];
+      notes.forEach((note, index) => {
+        const noteDiv = document.createElement("div");
+        noteDiv.className = "note";
+        noteDiv.textContent = note;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "delete-btn";
+        deleteBtn.textContent = "حذف";
+        deleteBtn.onclick = () => deleteNote(index);
+
+        noteDiv.appendChild(deleteBtn);
+        notesContainer.appendChild(noteDiv);
+      });
+    }
+  </script>
+</body>
+</html>

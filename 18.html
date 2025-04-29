@@ -1,0 +1,96 @@
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مولد اقتباسات عشوائية</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>مولد اقتباسات عشوائية</h1>
+    <div id="quote-box">
+      <p id="quote">اضغط على الزر للحصول على اقتباس جديد</p>
+    </div>
+    <button onclick="generateQuote()">اقتباس جديد</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+<style>
+
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #8EC5FC, #E0C3FC);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  direction: rtl;
+}
+
+.container {
+  background-color: #ffffffcc;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  max-width: 500px;
+  width: 90%;
+}
+
+h1 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+#quote-box {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 15px;
+  font-size: 20px;
+  color: #555;
+  margin-bottom: 20px;
+  min-height: 100px;
+}
+
+button {
+  background-color: #6C5CE7;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #5A4ECF;
+}
+</style>
+
+<script>
+
+const quotes = [
+  "كن أنت التغيير الذي تريد أن تراه في العالم. - غاندي",
+  "الحياة ليست انتظار العاصفة، بل تعلُّم الرقص تحت المطر.",
+  "إذا أردت شيئًا لم يكن لديك من قبل، فعليك أن تفعل شيئًا لم تفعله من قبل.",
+  "لا تدع الأمس يستهلك الكثير من اليوم.",
+  "كل شيء يحدث لسبب، وثق أن الأفضل لم يأتِ بعد.",
+  "العقل البشري مثل المظلة، لا يعمل إلا إذا كان مفتوحًا."
+];
+
+function generateQuote() {
+  const randomIndex = Math.floor(Math.random() * quotes.length);
+  document.getElementById('quote').textContent = quotes[randomIndex];
+}
+</script>
